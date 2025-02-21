@@ -2,7 +2,7 @@ name: Coin Alert Bot
 
 on:
   schedule:
-    - cron: '*/10 * * * *' # Her 10 dakikada bir çalıştır
+    - cron: '*/30 * * * *'  # Her 30 saniyede bir çalıştır
   workflow_dispatch: # Manuel olarak çalıştırabilme
 
 jobs:
