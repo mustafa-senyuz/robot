@@ -20,10 +20,10 @@ jobs:
           python-version: '3.11'
 
       - name: Gerekli Kütüphaneleri Yükle
-        run: pip install -r requirements.txt
+        run: pip install -r Coin_BOT/requirements.txt
 
       - name: Python Betiğini Çalıştır
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           API_KEY: ${{ secrets.API_KEY }}
-        run: python coin.py
+        run: python Coin_BOT/coin.py
