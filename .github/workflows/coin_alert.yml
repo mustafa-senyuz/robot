@@ -3,7 +3,6 @@ name: Coin Alert Bot
 on:
   schedule:
     - cron: '*/10 * * * *' # Her 10 dakikada bir çalıştır
-
   workflow_dispatch: # Manuel olarak çalıştırabilme
 
 jobs:
@@ -19,11 +18,35 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Python Versiyonunu Kontrol Et
+        run: python --version
+
       - name: Gerekli Kütüphaneleri Yükle
-        run: pip install -r Coin_BOT/requirements.txt
+        run: |
+          echo "[DEBUG] pip güncelleniyor..."
+          python -m pip install --upgrade pip
+          echo "[DEBUG] Gerekli paketler yükleniyor..."
+          pip install -r Coin_BOT/requirements.txt
+
+      - name: Ortam Değişkenlerini Kontrol Et
+        run: |
+          echo "[DEBUG] Ortam değişkenleri kontrol ediliyor..."
+          if [[ -z "${{ secrets.BOT_TOKEN }}" ]]; then
+            echo "[HATA] BOT_TOKEN tanımlanmamış!"
+            exit 1
+          fi
+          if [[ -z "${{ secrets.API_KEY }}" ]]; then
+            echo "[HATA] API_KEY tanımlanmamış!"
+            exit 1
+          fi
+          echo "[DEBUG] Ortam değişkenleri mevcut."
 
       - name: Python Betiğini Çalıştır
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           API_KEY: ${{ secrets.API_KEY }}
-        run: python Coin_BOT/coin.py
+        run: |
+          echo "[DEBUG] Python betiği çalıştırılıyor..."
+          set -x  # Hata ayıklamak için komutları göster
+          python Coin_BOT/coin.py 2>&1 | tee output.log
+          echo "[DEBUG] Python betiği tamamlandı."
