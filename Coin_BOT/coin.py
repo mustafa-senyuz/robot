@@ -25,8 +25,8 @@ async def countdown_and_send_alerts():
     bot = Bot(token=BOT_TOKEN)
 
     while True:
-        for remaining in range(30, 0, -1):
-            countdown_message = f"Geri sayım: {remaining} saniye kaldı."
+        for remaining in range(30, 0, -10):
+            countdown_message = f"API'nin çağrılmasına {remaining} saniye kaldı..."
             for chat_id in CHAT_IDS:
                 try:
                     await bot.send_message(chat_id=chat_id, text=countdown_message)
@@ -36,7 +36,7 @@ async def countdown_and_send_alerts():
             await asyncio.sleep(10)  # 10 saniyede bir geri sayımı gönder
 
         # 0 saniye kaldı, API'den veri çekme işlemi yapılacak
-        print("0 saniye kaldı, API'den veri çekiliyor...")
+        print("API'nin çağrılmasına 0 saniye kaldı, API'den veri çekiliyor...")
         alert_coins = get_coins_with_high_volume_change()
         if alert_coins:
             message = "🚨 High Volume Change Coins (24h):\n" + "\n".join(alert_coins)
